@@ -27,4 +27,5 @@
   - [ ] 智能救援
 
 ## 协议及声明
-本项目遵循 [MIT](https://opensource.org/licenses/MIT) 协议，请遵守协议。
+本项目遵循 [MIT](https://opensource.org/licenses/MIT) 协议，请遵守协议。\
+本项目充斥大量人机生成内容，仅供参考，后续会进行完善和替换。

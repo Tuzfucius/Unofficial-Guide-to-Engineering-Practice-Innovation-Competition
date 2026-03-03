@@ -1,0 +1,16 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "visual_control.h": "c",
+            "all2.h": "c",
+            "motor_pid.h": "c",
+            "ft_servo.h": "c"
+        }
+    },
+    "extensions": {}
+}

@@ -1,0 +1,415 @@
+{
+  "name": "USART_TEST",
+  "type": "ARM",
+  "dependenceList": [],
+  "srcDirs": [],
+  "virtualFolder": {
+    "name": "<virtual_root>",
+    "files": [],
+    "folders": [
+      {
+        "name": "Application",
+        "files": [],
+        "folders": [
+          {
+            "name": "MDK-ARM",
+            "files": [
+              {
+                "path": "startup_stm32f407xx.s"
+              }
+            ],
+            "folders": []
+          },
+          {
+            "name": "User",
+            "files": [],
+            "folders": [
+              {
+                "name": "Core",
+                "files": [
+                  {
+                    "path": "../Core/Src/main.c"
+                  },
+                  {
+                    "path": "../Core/Src/stm32f4xx_it.c"
+                  },
+                  {
+                    "path": "../Core/Src/stm32f4xx_hal_msp.c"
+                  },
+                  {
+                    "path": "../Core/Inc/All.h"
+                  },
+                  {
+                    "path": "../Core/Inc/angle_pid.h"
+                  },
+                  {
+                    "path": "../Core/Inc/custom_fonts.h"
+                  },
+                  {
+                    "path": "../Core/Inc/datou.h"
+                  },
+                  {
+                    "path": "../Core/Inc/datou_pwm.h"
+                  },
+                  {
+                    "path": "../Core/Inc/encoder.h"
+                  },
+                  {
+                    "path": "../Core/Inc/fashion_star_uart_servo.h"
+                  },
+                  {
+                    "path": "../Core/Inc/fire_debugger.h"
+                  },
+                  {
+                    "path": "../Core/Inc/ft_servo.h"
+                  },
+                  {
+                    "path": "../Core/Inc/hwt101.h"
+                  },
+                  {
+                    "path": "../Core/Inc/main.h"
+                  },
+                  {
+                    "path": "../Core/Inc/Motor.h"
+                  },
+                  {
+                    "path": "../Core/Inc/Motor_PID.h"
+                  },
+                  {
+                    "path": "../Core/Inc/motor_test.h"
+                  },
+                  {
+                    "path": "../Core/Inc/openmv_uart.h"
+                  },
+                  {
+                    "path": "../Core/Inc/qr.h"
+                  },
+                  {
+                    "path": "../Core/Inc/ring_buffer.h"
+                  },
+                  {
+                    "path": "../Core/Inc/servo.h"
+                  },
+                  {
+                    "path": "../Core/Inc/ssd1306.h"
+                  },
+                  {
+                    "path": "../Core/Inc/ssd1306_fonts.h"
+                  },
+                  {
+                    "path": "../Core/Inc/stm32f4xx_hal_conf.h"
+                  },
+                  {
+                    "path": "../Core/Inc/stm32f4xx_it.h"
+                  },
+                  {
+                    "path": "../Core/Inc/tou.h"
+                  },
+                  {
+                    "path": "../Core/Inc/usart.h"
+                  },
+                  {
+                    "path": "../Core/Inc/user_uart.h"
+                  },
+                  {
+                    "path": "../Core/Inc/visual_control.h"
+                  },
+                  {
+                    "path": "../Core/Src/All.c"
+                  },
+                  {
+                    "path": "../Core/Src/angle_pid.c"
+                  },
+                  {
+                    "path": "../Core/Src/custom_fonts.c"
+                  },
+                  {
+                    "path": "../Core/Src/datou.c"
+                  },
+                  {
+                    "path": "../Core/Src/datou_pwm.c"
+                  },
+                  {
+                    "path": "../Core/Src/encoder.c"
+                  },
+                  {
+                    "path": "../Core/Src/fashion_star_uart_servo.c"
+                  },
+                  {
+                    "path": "../Core/Src/fire_debugger.c"
+                  },
+                  {
+                    "path": "../Core/Src/ft_servo.c"
+                  },
+                  {
+                    "path": "../Core/Src/hwt101.c"
+                  },
+                  {
+                    "path": "../Core/Src/Motor.c"
+                  },
+                  {
+                    "path": "../Core/Src/Motor_PID.c"
+                  },
+                  {
+                    "path": "../Core/Src/motor_test.c"
+                  },
+                  {
+                    "path": "../Core/Src/openmv_uart.c"
+                  },
+                  {
+                    "path": "../Core/Src/qr.c"
+                  },
+                  {
+                    "path": "../Core/Src/ring_buffer.c"
+                  },
+                  {
+                    "path": "../Core/Src/servo.c"
+                  },
+                  {
+                    "path": "../Core/Src/ssd1306.c"
+                  },
+                  {
+                    "path": "../Core/Src/ssd1306_fonts.c"
+                  },
+                  {
+                    "path": "../Core/Src/system_stm32f4xx.c"
+                  },
+                  {
+                    "path": "../Core/Src/usart.c"
+                  },
+                  {
+                    "path": "../Core/Src/user_uart.c"
+                  },
+                  {
+                    "path": "../Core/Src/visual_control.c"
+                  },
+                  {
+                    "path": "../Core/Src/all2.c"
+                  },
+                  {
+                    "path": "../Core/Inc/all2.h"
+                  }
+                ],
+                "folders": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Drivers",
+        "files": [],
+        "folders": [
+          {
+            "name": "STM32F4xx_HAL_Driver",
+            "files": [
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c"
+              },
+              {
+                "path": "../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c"
+              }
+            ],
+            "folders": []
+          },
+          {
+            "name": "CMSIS",
+            "files": [
+              {
+                "path": "../Core/Src/system_stm32f4xx.c"
+              }
+            ],
+            "folders": []
+          }
+        ]
+      },
+      {
+        "name": "::CMSIS",
+        "files": [],
+        "folders": []
+      }
+    ]
+  },
+  "outDir": "build",
+  "deviceName": null,
+  "packDir": null,
+  "miscInfo": {
+    "uid": "af2a39255e487763a367e4194d151b70"
+  },
+  "targets": {
+    "USART_TEST": {
+      "excludeList": [],
+      "toolchain": "AC5",
+      "compileConfig": {
+        "cpuType": "Cortex-M4",
+        "archExtensions": "",
+        "floatingPointHardware": "single",
+        "useCustomScatterFile": false,
+        "scatterFilePath": "<YOUR_SCATTER_FILE>.sct",
+        "storageLayout": {
+          "RAM": [
+            {
+              "tag": "IRAM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x20000000",
+                "size": "0x5000"
+              },
+              "isChecked": true,
+              "noInit": false
+            }
+          ],
+          "ROM": [
+            {
+              "tag": "IROM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x08000000",
+                "size": "0x10000"
+              },
+              "isChecked": true,
+              "isStartup": true
+            }
+          ]
+        },
+        "options": "null"
+      },
+      "uploader": "STLink",
+      "uploadConfig": {
+        "bin": "",
+        "proType": "SWD",
+        "resetMode": "default",
+        "runAfterProgram": true,
+        "speed": 4000,
+        "address": "0x08000000",
+        "elFile": "None",
+        "optionBytes": ".eide/usart_test.st.option.bytes.ini",
+        "otherCmds": ""
+      },
+      "uploadConfigMap": {
+        "JLink": {
+          "bin": "",
+          "baseAddr": "",
+          "cpuInfo": {
+            "vendor": "null",
+            "cpuName": "null"
+          },
+          "proType": 1,
+          "speed": 8000,
+          "otherCmds": ""
+        }
+      },
+      "custom_dep": {
+        "name": "default",
+        "incList": [
+          "../Core/Inc",
+          "../Drivers/STM32F4xx_HAL_Driver/Inc",
+          "../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy",
+          "../Drivers/CMSIS/Device/ST/STM32F4xx/Include",
+          "../Drivers/CMSIS/Include",
+          ".cmsis/include",
+          "RTE/_USART_TEST"
+        ],
+        "libList": [],
+        "defineList": [
+          "USE_HAL_DRIVER",
+          "STM32F407xx"
+        ]
+      },
+      "builderOptions": {
+        "AC5": {
+          "version": 4,
+          "beforeBuildTasks": [],
+          "afterBuildTasks": [],
+          "global": {
+            "use-microLIB": true,
+            "output-debug-info": "enable"
+          },
+          "c/cpp-compiler": {
+            "optimization": "level-3",
+            "one-elf-section-per-function": true,
+            "c99-mode": true,
+            "C_FLAGS": "--diag_suppress=1 --diag_suppress=1295",
+            "CXX_FLAGS": "--diag_suppress=1 --diag_suppress=1295",
+            "warnings": "all-warnings"
+          },
+          "asm-compiler": {},
+          "linker": {
+            "$outputTaskExcludes": [
+              ".bin"
+            ],
+            "output-format": "elf"
+          }
+        },
+        "AC6": {
+          "version": 3,
+          "beforeBuildTasks": [],
+          "afterBuildTasks": [],
+          "global": {
+            "use-microLIB": true,
+            "output-debug-info": "enable"
+          },
+          "c/cpp-compiler": {
+            "optimization": "level-0",
+            "language-c": "c99",
+            "language-cpp": "c++11",
+            "warnings": "ac5-like-warnings"
+          },
+          "asm-compiler": {
+            "$use": "asm-auto"
+          },
+          "linker": {
+            "$outputTaskExcludes": [
+              ".bin"
+            ],
+            "output-format": "elf",
+            "misc-controls": "--diag_suppress=L6329"
+          }
+        }
+      }
+    }
+  },
+  "version": "3.6"
+}

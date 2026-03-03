@@ -1,0 +1,113 @@
+#include "mpu.h"
+
+// 内部使用的I2C读写函数
+static uint8_t MPU6050_Write_Byte(I2C_HandleTypeDef *hi2c, uint8_t reg, uint8_t data);
+static uint8_t MPU6050_Read_Bytes(I2C_HandleTypeDef *hi2c, uint8_t reg, uint8_t *buffer, uint8_t length);
+
+/**
+  * @brief  初始化MPU6050传感器
+  * @param  hi2c: 指向I2C句柄的指针 (由CubeMX在main.c中生成，例如 &hi2c2)
+  * @retval 0: 成功, 1: 失败
+  */
+uint8_t MPU6050_Init(I2C_HandleTypeDef *hi2c)
+{
+    uint8_t who_am_i = 0;
+
+    // 1. 检查设备ID
+    MPU6050_Read_Bytes(hi2c, MPU6050_RA_WHO_AM_I, &who_am_i, 1);
+    if (who_am_i != MPU6050_ADDRESS)
+    {
+        return 1; // ID不匹配，初始化失败
+    }
+
+    // 2. 复位并唤醒设备
+    MPU6050_Write_Byte(hi2c, MPU6050_RA_PWR_MGMT_1, 0x80); // 复位设备
+    HAL_Delay(100);
+    MPU6050_Write_Byte(hi2c, MPU6050_RA_PWR_MGMT_1, 0x01); // 使用X轴陀螺仪作为时钟源，并唤醒
+
+    // 3. 配置陀螺仪量程为 ±500 °/s
+    // 0x00: ±250, 0x08: ±500, 0x10: ±1000, 0x18: ±2000
+    MPU6050_Write_Byte(hi2c, MPU6050_RA_GYRO_CONFIG, 0x08);
+
+    // 4. 配置加速度计量程为 ±2 g
+    // 0x00: ±2g, 0x08: ±4g, 0x10: ±8g, 0x18: ±16g
+    MPU6050_Write_Byte(hi2c, MPU6050_RA_ACCEL_CONFIG, 0x00);
+
+    // 5. 设置采样率分频
+    // Sample Rate = Gyroscope Output Rate / (1 + SMPLRT_DIV)
+    // Gyroscope Output Rate = 1KHz (当DLPF开启时)
+    // 这里设置采样率为 1000 / (1 + 9) = 100 Hz
+    MPU6050_Write_Byte(hi2c, MPU6050_RA_SMPLRT_DIV, 9);
+
+    // 6. 配置数字低通滤波器 (DLPF)
+    // 带宽设置为42Hz
+    MPU6050_Write_Byte(hi2c, MPU6050_RA_CONFIG, 0x03);
+
+    return 0; // 初始化成功
+}
+
+/**
+  * @brief  从MPU6050读取所有6轴的原始数据和物理数据
+  * @param  hi2c: 指向I2C句柄的指针
+  * @param  data: 指向MPU6050_Data_t结构体的指针，用于存储读取的数据
+  * @retval 0: 成功, 1: 失败
+  */
+uint8_t MPU6050_GetData(I2C_HandleTypeDef *hi2c, MPU6050_Data_t *data)
+{
+    uint8_t buffer[14];
+
+    // 从加速度计X轴高位寄存器开始，一次性读取14个字节
+    // 这14个字节包含了加速度计、温度、陀螺仪的所有数据
+    if (MPU6050_Read_Bytes(hi2c, MPU6050_RA_ACCEL_XOUT_H, buffer, 14) == 0)
+    {
+        // 组合高低字节以获得16位原始数据
+        data->Accel_X_RAW = (int16_t)(buffer[0] << 8 | buffer[1]);
+        data->Accel_Y_RAW = (int16_t)(buffer[2] << 8 | buffer[3]);
+        data->Accel_Z_RAW = (int16_t)(buffer[4] << 8 | buffer[5]);
+        // buffer[6] 和 buffer[7] 是温度数据，这里跳过
+        data->Gyro_X_RAW = (int16_t)(buffer[8] << 8 | buffer[9]);
+        data->Gyro_Y_RAW = (int16_t)(buffer[10] << 8 | buffer[11]);
+        data->Gyro_Z_RAW = (int16_t)(buffer[12] << 8 | buffer[13]);
+
+        // 将原始数据转换为物理单位
+        data->Ax = data->Accel_X_RAW / ACCEL_SENSITIVITY_2G;
+        data->Ay = data->Accel_Y_RAW / ACCEL_SENSITIVITY_2G;
+        data->Az = data->Accel_Z_RAW / ACCEL_SENSITIVITY_2G;
+
+        data->Gx = data->Gyro_X_RAW / GYRO_SENSITIVITY_500DPS;
+        data->Gy = data->Gyro_Y_RAW / GYRO_SENSITIVITY_500DPS;
+        data->Gz = data->Gyro_Z_RAW / GYRO_SENSITIVITY_500DPS;
+        
+        return 0; // 数据读取和转换成功
+    }
+
+    return 1; // 读取失败
+}
+
+
+/**
+  * @brief  (内部函数) 向MPU6050指定寄存器写入一个字节
+  * @param  hi2c: I2C句柄
+  * @param  reg: 寄存器地址
+  * @param  data: 要写入的数据
+  * @retval HAL状态
+  */
+static uint8_t MPU6050_Write_Byte(I2C_HandleTypeDef *hi2c, uint8_t reg, uint8_t data)
+{
+    // HAL库的I2C地址需要左移一位
+    return HAL_I2C_Mem_Write(hi2c, MPU6050_ADDRESS << 1, reg, 1, &data, 1, HAL_MAX_DELAY);
+}
+
+/**
+  * @brief  (内部函数) 从MPU6050指定寄存器读取N个字节
+  * @param  hi2c: I2C句柄
+  * @param  reg: 寄存器地址
+  * @param  buffer: 存储读取数据的缓冲区
+  * @param  length: 要读取的数据长度
+  * @retval HAL状态
+  */
+static uint8_t MPU6050_Read_Bytes(I2C_HandleTypeDef *hi2c, uint8_t reg, uint8_t *buffer, uint8_t length)
+{
+    // HAL库的I2C地址需要左移一位
+    return HAL_I2C_Mem_Read(hi2c, MPU6050_ADDRESS << 1, reg, 1, buffer, length, HAL_MAX_DELAY);
+}

@@ -1,0 +1,139 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.36.0.0
+Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: a 952105672@qq.com, a, LIC=32B1Q-N4UMZ-CXQU6-D4ML5-GW9ZU-5W244
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.36.0.0
+Toolchain Path:  D:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.36.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.9.0
+Dialog DLL:      TCM.DLL V1.53.0.0
+ 
+<h2>Project:</h2>
+E:\×ÀÃæ\10.9\MDK-ARM\USART_TEST.uvprojx
+Project File Date:  11/16/2025
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'USART_TEST'
+assembling startup_stm32f407xx.s...
+compiling stm32f4xx_hal_flash.c...
+compiling stm32f4xx_hal_gpio.c...
+compiling stm32f4xx_hal_flash_ramfunc.c...
+compiling stm32f4xx_it.c...
+compiling stm32f4xx_hal_dma.c...
+compiling stm32f4xx_hal_flash_ex.c...
+compiling stm32f4xx_hal_rcc_ex.c...
+compiling stm32f4xx_hal_dma_ex.c...
+compiling stm32f4xx_hal_rcc.c...
+compiling stm32f4xx_hal_msp.c...
+compiling main.c...
+../Core/Inc/Motor.h(90): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MOTOR_H */
+../Core/Inc/encoder.h(88): warning:  #1-D: last line of file ends without a newline
+  #endif /* __ENCODER_H */
+../Core/Inc/hwt101.h(32): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Inc/Motor_PID.h(280): warning:  #1295-D: Deprecated declaration Car_Debug_Rotation_Test - give arg types
+      void Car_Debug_Rotation_Test();
+../Core/Inc/Motor_PID.h(296): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MOTOR_PID_H */
+../Core/Inc/angle_pid.h(103): warning:  #1-D: last line of file ends without a newline
+  #endif /* __ANGLE_PID_H__ */
+../Core/Inc/fire_debugger.h(45): warning:  #1-D: last line of file ends without a newline
+  #endif /* __FIRE_DEBUGGER_H */
+../Core/Inc/ssd1306_fonts.h(36): warning:  #1-D: last line of file ends without a newline
+  #endif // __SSD1306_FONTS_H__
+../Core/Inc/ssd1306.h(35): warning:  #1-D: last line of file ends without a newline
+  #endif // INC_SSD1306_H_
+../Core/Inc/fashion_star_uart_servo.h(151): warning:  #1-D: last line of file ends without a newline
+  #endif // __FASHION_STAR_UART_SERVO_H
+../Core/Inc/servo.h(110): warning:  #1-D: last line of file ends without a newline
+  #endif /* SERVO_H */
+../Core/Inc/qr.h(40): warning:  #1-D: last line of file ends without a newline
+  #endif /* __QR_H */
+../Core/Inc/openmv_uart.h(228): warning:  #1-D: last line of file ends without a newline
+  #endif // __OPENMV_UART_H
+../Core/Inc/visual_control.h(70): warning:  #1-D: last line of file ends without a newline
+  #endif /* __VISUAL_CONTROL_H */
+../Core/Inc/datou_pwm.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* DATOU_PWM_H */
+../Core/Inc/custom_fonts.h(16): warning:  #1-D: last line of file ends without a newline
+  #endif /* INC_CUSTOM_FONTS_H_ */
+../Core/Inc/All.h(106): warning:  #1-D: last line of file ends without a newline
+  #endif /* __ALL_H */
+../Core/Src/main.c(370): warning:  #1295-D: Deprecated declaration main_usart_rx_check - give arg types
+  void main_usart_rx_check();                          // å£°æ˜Žæ£€æŸ¥å‡½æ•?
+../Core/Src/main.c: 18 warnings, 0 errors
+compiling stm32f4xx_hal_tim_ex.c...
+compiling stm32f4xx_hal_tim.c...
+compiling stm32f4xx_hal_pwr_ex.c...
+compiling stm32f4xx_hal_exti.c...
+compiling system_stm32f4xx.c...
+compiling stm32f4xx_hal_pwr.c...
+compiling stm32f4xx_hal.c...
+compiling stm32f4xx_hal_cortex.c...
+compiling stm32f4xx_hal_uart.c...
+linking...
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Datou_PWM_Init (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Debugger_Init (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Encoders_All_Init (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Encoders_All_Update (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Font_7x10 (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol HAL_TIM_PeriodElapsedCallback_datou (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol HWT101_Init (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol HWT101_ParseData (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Motor_Init (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Motor_PID_Init_All (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Motor_PID_Update_All (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Motor_Speed_Test_Log_Data (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol User_Uart_Init (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Yaw_PID_Init (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol Yaw_PID_Update (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol qr_get_data (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol qr_has_new_data (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol qr_init (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol qr_uart_rx_event_callback (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol ssd1306_Fill (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol ssd1306_Init (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol ssd1306_SetCursor (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol ssd1306_UpdateScreen (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol ssd1306_WriteString (referred from main.o).
+USART_TEST\USART_TEST.axf: Error: L6218E: Undefined symbol usart1_rx_byte (referred from main.o).
+Not enough information to list image symbols.
+Not enough information to list load addresses in the image map.
+Finished: 2 information, 0 warning and 25 error messages.
+"USART_TEST\USART_TEST.axf" - 25 Error(s), 18 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.8.0.pack
+                ARM.CMSIS.5.8.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.5.0
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_USART_TEST
+  D:\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.5.0
+      Include file:  CMSIS\Core\Include\tz_context.h
+Target not created.
+Build Time Elapsed:  00:00:06
+</pre>
+</body>
+</html>

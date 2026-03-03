@@ -1,0 +1,340 @@
+#ifndef __MOTOR_PID_H
+#define __MOTOR_PID_H
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include "encoder.h" // 需要包含编码器头文件以获取反馈
+#include <stdbool.h> // 需要bool类型
+
+/* ============================================================================ */
+/* ===================        PID 控制器核心参数        =================== */
+/* ============================================================================ */
+
+/**
+ * @brief 右侧电机动力补偿系数
+ * @note  - 如果右轮动力比左轮弱，请将此值设为 > 1.0 (例如 1.05f, 1.1f)
+ *        - 如果右轮动力比左轮强，请将此值设为 < 1.0 (例如 0.95f, 0.9f)
+ *        - 初始值设为 1.0f (无补偿)
+ */
+#define RIGHT_MOTOR_POWER_FACTOR 1.00f // 根据新测试数据：左右轮组已基本平衡
+
+// <<< NEW: 定义位置环PID的死区 (单位: 编码器脉冲数)
+#define POSITION_PID_DEADBAND 50.0f
+
+/* ============================================================================ */
+/*                           PID参数宏定义 - 根据测试数据优化                    */
+/* ============================================================================ */
+
+// 基准位置环PID参数
+#define POS_PID_KP_BASE 1.5f
+#define POS_PID_KI_BASE 0.8f
+#define POS_PID_KD_BASE 2.0f
+#define POS_PID_IMAX_BASE 100.0f
+#define POS_PID_OMAX_BASE 25.0f
+
+// 基准速度环PID参数
+#define SPEED_PID_KP_BASE 8.0f
+#define SPEED_PID_KI_BASE 2.5f
+#define SPEED_PID_KD_BASE 3.0f
+#define SPEED_PID_IMAX_BASE 200.0f
+#define SPEED_PID_OMAX_BASE PWM_MAX_VALUE
+
+// L1电机参数调整 (跑得太多，需要降低响应)
+#define L1_POS_PID_KP 1.0f
+#define L1_POS_PID_OMAX 20.0f
+#define L1_SPEED_PID_KP 6.0f
+
+// R1电机参数调整 (稍微减弱，避免过补偿)
+#define R1_POS_PID_KP 2.2f
+#define R1_POS_PID_KI 1.3f
+#define R1_POS_PID_OMAX 32.0f
+#define R1_SPEED_PID_KP 10.5f
+#define R1_SPEED_PID_KI 3.5f
+
+// L2电机参数调整 (还是偏少，继续增强)
+#define L2_POS_PID_KP 2.2f
+#define L2_POS_PID_KI 1.4f
+#define L2_POS_PID_OMAX 32.0f
+#define L2_SPEED_PID_KP 10.5f
+#define L2_SPEED_PID_KI 3.8fexte // 轮子补偿因子 (根据最新测试数据精细调整)
+#define L1_TRAVEL_FACTOR 0.96f   // L1=1324，减少4%
+#define L2_TRAVEL_FACTOR 1.04f   // L2还是少10个脉冲，增加到4%
+#define R1_TRAVEL_FACTOR 1.08f   // R1多了7个脉冲，从10%减少到8%
+#define R2_TRAVEL_FACTOR 0.99f   // R2=1321，减少1%"
+{
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include "encoder.h" // 需要包含编码器头文件以获取反馈
+#include <stdbool.h> // 包含bool类型定义
+#include <stdint.h>  // 包含标准整数类型
+
+/* ============================================================================ */
+/* ===================        PID 控制器核心参数        =================== */
+/* ============================================================================ */
+
+/**
+ * @brief 右侧电机动力补偿系数
+ * @note  - 如果右轮动力比左轮弱，请将此值设为 > 1.0 (例如 1.05f, 1.1f)
+ *        - 如果右轮动力比左轮强，请将此值设为 < 1.0 (例如 0.95f, 0.9f)
+ *        - 初始值设为 1.0f (无补偿)
+ */
+#define RIGHT_MOTOR_POWER_FACTOR 1.00f // 根据新测试数据：左右轮组已基本平衡
+
+// <<< NEW: 定义位置环PID的死区 (单位: 编码器脉冲数)
+#define POSITION_PID_DEADBAND 50.0f
+
+/* ============================================================================ */
+/*                           PID参数宏定义 - 根据测试数据优化                    */
+/* ============================================================================ */
+
+// 基准位置环PID参数
+#define POS_PID_KP_BASE 1.5f
+#define POS_PID_KI_BASE 0.8f
+#define POS_PID_KD_BASE 2.0f
+#define POS_PID_IMAX_BASE 100.0f
+#define POS_PID_OMAX_BASE 25.0f
+
+// 基准速度环PID参数
+#define SPEED_PID_KP_BASE 8.0f
+#define SPEED_PID_KI_BASE 2.5f
+#define SPEED_PID_KD_BASE 3.0f
+#define SPEED_PID_IMAX_BASE 200.0f
+#define SPEED_PID_OMAX_BASE PWM_MAX_VALUE
+
+// L1电机参数调整 (跑得太多，需要降低响应)
+#define L1_POS_PID_KP 1.0f
+#define L1_POS_PID_OMAX 20.0f
+#define L1_SPEED_PID_KP 6.0f
+
+// R1电机参数调整 (跑得最少，需要大幅增强响应)
+#define R1_POS_PID_KP 2.5f
+#define R1_POS_PID_KI 1.5f
+#define R1_POS_PID_OMAX 35.0f
+#define R1_SPEED_PID_KP 12.0f
+#define R1_SPEED_PID_KI 4.0f
+
+// L2电机参数调整 (偏少约10个脉冲，进一步增强响应)
+#define L2_POS_PID_KP 2.2f
+#define L2_POS_PID_KI 1.3f
+#define L2_POS_PID_OMAX 32.0f
+#define L2_SPEED_PID_KP 10.5f
+#define L2_SPEED_PID_KI 3.8f
+
+// R2电机参数调整 (跑得最少且不稳定，需要增强响应)
+#define R2_POS_PID_KP 2.0f
+#define R2_POS_PID_KI 1.2f
+#define R2_POS_PID_OMAX 30.0f
+#define R2_SPEED_PID_KP 10.0f
+#define R2_SPEED_PID_KI 3.5f
+
+// 轮子补偿因子 (根据最新测试数据调整)
+#define L1_TRAVEL_FACTOR 0.96f // L1=1324，减少4%
+#define L2_TRAVEL_FACTOR 1.03f // L2还是少10个脉冲，增加3%
+#define R1_TRAVEL_FACTOR 1.10f // R1=1265，需要增加10%
+#define R2_TRAVEL_FACTOR 0.99f // R2=1321，减少1%
+
+    /**
+     * @brief PID控制模式枚举
+     */
+    typedef enum
+    {
+        PID_MODE_DISABLE, // PID禁用状态
+        PID_MODE_SPEED,   // 速度闭环模式
+        PID_MODE_POSITION // 位置闭环模式
+    } PID_Mode_t;
+
+    /**
+     * @brief PID控制器结构体
+     */
+    typedef struct
+    {
+        float Kp; // 比例 Proportional
+        float Ki; // 积分 Integral
+        float Kd; // 微分 Derivative
+
+        float Target;   // 目标值
+        float Measured; // 测量值 (反馈值)
+
+        float Error;      // 当前误差 (Target - Measured)
+        float Last_Error; // 上一次的误差
+        float Integral;   // 积分累计值
+        float Output;     // PID控制器计算输出
+
+        float Integral_Max; // 积分项最大值 (用于积分限幅)
+        float Output_Max;   // 控制器总输出最大值
+
+    } PID_Controller_t;
+
+    /**
+     * @brief 单个电机的双环PID控制总结构体 (已重构)
+     */
+    typedef struct
+    {
+        PID_Controller_t Position_PID; // 位置环 (外环)
+        PID_Controller_t Speed_PID;    // 速度环 (内环)
+        Encoder_t *Encoder;            // 指向对应编码器
+        PID_Mode_t Mode;               // 当前控制模式
+    } Motor_PID_t;
+
+    /* Extern variables ----------------------------------------------------------*/
+    // 为四个电机声明独立的PID控制结构体
+    extern Motor_PID_t MotorA_PID;
+    extern Motor_PID_t MotorB_PID;
+    extern Motor_PID_t MotorC_PID;
+    extern Motor_PID_t MotorD_PID;
+
+    // <<< NEW: 声明PID激活状态的全局标志位
+    extern uint8_t g_is_pid_active;
+
+    /* Public function prototypes ------------------------------------------------*/
+
+    /**
+     * @brief 初始化所有电机的PID控制器
+     * @note  在主函数初始化部分调用一次
+     */
+    void Motor_PID_Init_All(void);
+
+    /**
+     * @brief 更新所有电机的PID计算并施加控制
+     * @note  必须在固定的周期性中断中调用 (例如 TIM6 中断)
+     */
+    void Motor_PID_Update_All(void);
+
+    /**
+     * @brief 为单个电机设置目标速度 (用于速度闭环模式)
+     * @param motor_pid 指向要控制的电机PID结构体
+     * @param target_rpm 目标速度，单位：RPM (转/分钟)
+     */
+    void Motor_PID_Set_Speed(Motor_PID_t * motor_pid, float target_rpm);
+    void Motor_PID_Set_Position(Motor_PID_t * motor_pid, int64_t target_pos);
+
+    /* ============================================================================ */
+    /* ===================        高层整车运动控制函数        =================== */
+    /* ============================================================================ */
+
+    // /**
+    //  * @brief [核心函数] PID控制小车整体运动
+    //  * @note  左侧轮组: 电机B(左前), 电机C(左后)
+    //  *        右侧轮组: 电机A(右前), 电机D(右后)
+    //  * @param left_rpm  左侧轮组的目标速度 (RPM)
+    //  * @param right_rpm 右侧轮组的目标速度 (RPM)
+    //  */
+    // void Car_Move_PID(float left_rpm, float right_rpm);
+
+    // /**
+    //  * @brief PID控制小车前进
+    //  * @param rpm 目标速度 (RPM, 应为正值)
+    //  */
+    // void Car_Go_PID(float rpm);
+
+    // /**
+    //  * @brief PID控制小车后退
+    //  * @param rpm 目标速度 (RPM, 应为正值)
+    //  */
+    // void Car_Back_PID(float rpm);
+
+    // /**
+    //  * @brief PID控制小车停止
+    //  */
+    // void Car_Stop_PID(void);
+
+    // /**
+    //  * @brief PID控制小车原地左转
+    //  * @param rpm 转动速度 (RPM, 应为正值)
+    //  */
+    // void Car_TurnLeft_PID(float rpm);
+
+    // /**
+    //  * @brief PID控制小车原地右转
+    //  * @param rpm 转动速度 (RPM, 应为正值)
+    //  */
+    // void Car_TurnRight_PID(float rpm);
+
+    // /**
+    //  * @brief [核心位置函数] PID控制小车移动到绝对位置
+    //  * @param left_pos  左轮的目标绝对脉冲数
+    //  * @param right_pos 右轮的目标绝对脉冲数
+    //  */
+    // void Car_Move_To_Pos_PID(int64_t left_pos, int64_t right_pos);
+
+    // /**
+    //  * @brief PID控制小车前进指定脉冲数
+    //  * @param pulses 要前进的脉冲数 (应为正值)
+    //  */
+    // void Car_Go_Pulses_PID(uint32_t pulses);
+
+    // /**
+    //  * @brief PID控制小车后退指定脉冲数
+    //  * @param pulses 要后退的脉冲数 (应为正值)
+    //  */
+    // void Car_Back_Pulses_PID(uint32_t pulses);
+
+    // 核心运动函数
+    void Car_Mecanum_Move_PID(float rpm_a, float rpm_b, float rpm_c, float rpm_d);
+
+    // 基础移动
+    void Car_Go_PID(float rpm);
+    void Car_Back_PID(float rpm);
+    void Car_Stop_PID(void);
+
+    // 旋转与平移
+    void Car_TurnLeft_PID(float rpm);
+    void Car_TurnRight_PID(float rpm);
+    void Car_Strafe_Left_PID(float rpm);
+    void Car_Strafe_Right_PID(float rpm);
+
+    // 斜向运动
+    void Car_Go_Left_Front_PID(float rpm);
+    void Car_Go_Right_Front_PID(float rpm);
+    void Car_Back_Left_Rear_PID(float rpm);
+    void Car_Back_Right_Rear_PID(float rpm);
+
+    // 位置控制 (基于差速模型)
+    void Car_Move_To_Pos_PID(int64_t left_pos, int64_t right_pos);
+    void Car_Go_Pulses_PID(uint32_t pulses);
+    void Car_Back_Pulses_PID(uint32_t pulses);
+
+    /**
+     * @brief [优化版] 精确直线行走位置控制
+     * @param pulses 目标行走脉冲数（正数前进，负数后退）
+     * @note  专为直线行走优化，根据实际测试数据对各轮进行补偿
+     */
+    void Car_Go_Straight_Pulses_PID(int32_t pulses);
+
+    /**
+     * @brief  复位所有电机和PID的状态，确保起步一致性
+     * @note   在每次独立的运动序列开始前调用此函数，
+     *         例如，在Car_Stop_PID()之后，下一次Car_Go_PID()之前。
+     */
+    void Car_Reset_And_Sync_State(void);
+
+    /**
+     * @brief [调试函数] 测试左右轮同步性能
+     * @note  用于诊断"左轮和右轮起跑不一致"问题
+     */
+    void Car_Debug_Left_Right_Sync_Test(void);
+
+    /**
+     * @brief 检查小车是否已完全停止
+     * @return true: 小车已停止, false: 小车仍在运动
+     * @note 检查所有电机的目标速度和实际速度是否都为0
+     */
+    bool Car_Is_Stopped(void);
+
+    /**
+     * @brief 等待小车完全停止
+     * @param timeout_ms 超时时间(毫秒), 0表示无超时
+     * @return true: 停止成功, false: 超时
+     */
+    bool Car_Wait_Until_Stopped(uint32_t timeout_ms);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __MOTOR_PID_H */
